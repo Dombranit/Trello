@@ -1,0 +1,74 @@
+<html html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/main">
+<body>
+<div layout:fragment="site_content">
+    <!-- Button trigger modal -->
+    <button  sec:authorize="isAuthenticated()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        +Add New Folder
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Folder</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{'/addFolder'}" method="post">
+                        <div class="form-group">
+                            <input type="hidden" th:value="${currentUser!=null?currentUser.id:''}" name="user_id">
+                            <label>Folder Name:</label>
+                            <input type="text" class="form-control" name="folder_name">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-success">Add Folder</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container colum cl-mt-4">
+        <div class="row">
+            <div class="card" th:each="fol:${foldersList}" th:if="${currentUser!=null?fol.users.id==currentUser.id:''}">
+                <div class="card-header">
+                    Folder
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${fol.name}"></h5>
+                    <a th:href="@{'/Folder/'+ ${fol.id}}" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MODERATOR')" class="btn btn-primary">Open Folder</a>
+                    <button type="button" sec:authorize="isAuthenticated()" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                        Delete Folder
+                    </button>
+                    <!-- DeleteModal -->
+                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Folder</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form th:action="@{'/deleteEmtyFolder'}" method="post">
+                                        <input type="hidden" th:value="${fol.id}" name="folderId">
+                                        <h2 class="offset-4">Are u sure?</h2>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

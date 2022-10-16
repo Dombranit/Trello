@@ -1,0 +1,63 @@
+<html html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns="http://www.w3.org/1999/html"
+      layout:decorate="layout/main">
+<body>
+<div layout:fragment="site_content">
+<body>
+  <div class="container-center">
+      <div class="col-6 offset-4 mt-4">
+      <form th:action="@{'/save-Task'}" method="post">
+        <input type="hidden" th:value="${task.id}" name="task_id">
+        <input type="hidden"  th:value="${task.folder.id}" name="folder_id">
+        <div class="form-group">
+        <label>Title</label>
+        <input name="task_name" th:value="${task.title}">
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <input name="task_description" th:value="${task.description}">
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select th:value="${task.getStatus()}" name="task_status">
+            <option value="1" >InTest</option>
+            <option value="2">Done</option>
+            <option value="3">Failed</option>
+            <option value="0">ToDo</option>
+          </select>
+        </div>
+        <div>
+          <button class="btn btn-success" type="submit">Save</button>
+        </div>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+          Delete
+        </button>
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Task</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form th:action="@{'/deleteTask'}" method="post">
+                  <input type="hidden" th:value="${task.id}" name="taskID">
+                  <input type="hidden" th:value="${task.folder.id}" name="folderId">
+                  <h2 class="offset-4">Are u sure?</h2>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+</div>
+</body>
+</div>
+</body>
+</html>

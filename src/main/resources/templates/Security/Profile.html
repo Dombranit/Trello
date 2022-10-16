@@ -1,0 +1,15 @@
+<html html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/main">
+<body>
+<div layout:fragment="site_content">
+<div class="row mt-5">
+    <div class="col-5 offset-5">
+        <span ><h3 th:text="'Welcome'+${currentUser.getFullname()}"></h3> </span>
+        <span ><h5 th:text="'Welcome'+${currentUser.getRoles()}"></h5> </span>
+    </div>
+</div>
+</div>
+</body>
+</html>
